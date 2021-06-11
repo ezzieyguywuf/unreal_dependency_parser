@@ -18,3 +18,5 @@ if __name__=="__main__":
 
     print(root.tag)
     print(root.attrib)
+
+    hashDict = helper.getFileNames(root)
