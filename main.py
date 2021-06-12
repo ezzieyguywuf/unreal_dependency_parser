@@ -1,5 +1,7 @@
-import parser
 import argparse
+import gzip
+import hashlib
+import parser
 import requests
 
 def parseArguments():
@@ -19,10 +21,15 @@ if __name__=="__main__":
     baseUrl = root.attrib['BaseUrl']
 
     parsedData = parser.generateParsedData(root)
-    for data in parsedData[:5]:
-        url = "{}/{}/{}".format(baseUrl, data.remotePath, data.hash)
+    for pack in parsedData[:5]:
+        url = "{}/{}/{}".format(baseUrl, pack.remotePath, pack.hash)
         print("Downloading: " + url)
         req = requests.get(url)
-        fname = data.hash + ".pack"
-        with open(fname, 'wb') as outfile:
-            outfile.write(req.content)
+
+        data = gzip.decompress(req.content)
+        check_hash = hashlib.sha1(data)
+        print("    generated hash: {}".format(check_hash.hexdigest()))
+        print("    hash match: {}".format(pack.hash == check_hash.hexdigest()))
+        fname = pack.hash + ".data"
+        with open(pack.hash, 'wb') as outfile:
+            outfile.write(data)
