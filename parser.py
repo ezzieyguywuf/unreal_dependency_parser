@@ -5,6 +5,24 @@ import xml.etree.ElementTree as ET
 class FileData:
     filepath: str
 
+@dataclass
+class PackData:
+    hash: str
+    remotePath: str
+    compressedSize: int
+    size: int
+
+@dataclass
+class BlobData:
+    hash: str
+    size: int
+    offset: int
+
+@dataclass
+class FilePathData:
+    filePath: str
+    isExecutable: bool
+
 # Expects a filename, which will contain the xml data. No error-handling is
 # currently incorporated - so make sure it's an actual xml file
 def parseFile(fname: str) -> ET.ElementTree:
