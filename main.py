@@ -1,4 +1,4 @@
-import helper
+import parser
 import argparse
 
 def parseArguments():
@@ -13,10 +13,10 @@ if __name__=="__main__":
     args = parseArguments()
 
     print(args.dependency_file)
-    tree = helper.parseFile(args.dependency_file)
+    tree = parser.parseFile(args.dependency_file)
     root = tree.getroot()
 
     print(root.tag)
     print(root.attrib)
 
-    hashDict = helper.getFileNames(root)
+    hashDict = parser.generateHashMap(root)
