@@ -29,10 +29,10 @@ def parseFile(fname: str) -> ET.ElementTree:
     print("trying to parse {}".format(fname))
     return ET.parse(fname)
 
-def generateParseDict(treeRoot: ET.Element):
-    """Returns a dictionary containing the hierarchical parsed data
+def generateParsedData(treeRoot: ET.Element):
+    """Returns a list Pack objects containing hierarchical data needed for fetching
 
-       The hierarchy is Pack→Blob→FilePath
+       The hierarchy is Pack → Blob → FilePath
 
        A Pack is some sort of archive stored on the Epic servers. Each Pack
        contains one or more Blobs
