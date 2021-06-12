@@ -15,9 +15,10 @@ if __name__=="__main__":
     print(args.dependency_file)
     tree = parser.parseFile(args.dependency_file)
     root = tree.getroot()
-
-    print(root.tag)
-    print(root.attrib)
+    baseUrl = root.attrib['BaseUrl']
 
     parsedData = parser.generateParsedData(root)
     print(parsedData[0])
+    for data in parsedData:
+        url = "{}/{}/{}".format(baseUrl, data.remotePath, data.hash)
+        print(url)
