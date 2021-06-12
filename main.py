@@ -19,4 +19,5 @@ if __name__=="__main__":
     print(root.tag)
     print(root.attrib)
 
-    parseDict = parser.generateParseDict(root)
+    parsedData = parser.generateParsedData(root)
+    print(parsedData[0])
