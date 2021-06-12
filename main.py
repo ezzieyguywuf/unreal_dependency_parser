@@ -1,5 +1,6 @@
 import parser
 import argparse
+import requests
 
 def parseArguments():
     parser = argparse.ArgumentParser(description='Parse Unreal Engine deps')
@@ -18,7 +19,10 @@ if __name__=="__main__":
     baseUrl = root.attrib['BaseUrl']
 
     parsedData = parser.generateParsedData(root)
-    print(parsedData[0])
-    for data in parsedData:
+    for data in parsedData[:5]:
         url = "{}/{}/{}".format(baseUrl, data.remotePath, data.hash)
-        print(url)
+        print("Downloading: " + url)
+        req = requests.get(url)
+        fname = data.hash + ".pack"
+        with open(fname, 'wb') as outfile:
+            outfile.write(req.content)
