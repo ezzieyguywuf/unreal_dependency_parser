@@ -1,22 +1,20 @@
-import helper
-import argparse
+from dataclasses import dataclass
+import xml.etree.ElementTree as ET
 
-def parseArguments():
-    parser = argparse.ArgumentParser(description='Parse Unreal Engine deps')
-    parser.add_argument('dependency_file', metavar='FILE', type=str,
-                        help='The xml file containing the Unreal Engine dependencies')
+@dataclass
+class FileData:
+    filepath: str
 
-    return parser.parse_args()
+# Expects a filename, which will contain the xml data. No error-handling is
+# currently incorporated - so make sure it's an actual xml file
+def parseFile(fname: str) -> ET.ElementTree:
+    print("trying to parse {}".format(fname))
+    return ET.parse(fname)
 
-
-if __name__=="__main__":
-    args = parseArguments()
-
-    print(args.dependency_file)
-    tree = helper.parseFile(args.dependency_file)
-    root = tree.getroot()
-
-    print(root.tag)
-    print(root.attrib)
-
-    hashDict = helper.getFileNames(root)
+def generateHashMap(treeRoot: ET.Element):
+    out = {}
+    for child in treeRoot.find('Files').findall('File'):
+        fpath = child.attrib['Name']
+        fhash = child.attrib['Hash']
+        out[fhash] = FileData(fpath)
+    return out
