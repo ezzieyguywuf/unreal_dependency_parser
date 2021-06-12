@@ -29,10 +29,17 @@ def parseFile(fname: str) -> ET.ElementTree:
     print("trying to parse {}".format(fname))
     return ET.parse(fname)
 
-def generateHashMap(treeRoot: ET.Element):
+def generateParseDict(treeRoot: ET.Element):
+    """Returns a dictionary containing the hierarchical parsed data
+
+       The hierarchy is Pack→Blob→FilePath
+
+       A Pack is some sort of archive stored on the Epic servers. Each Pack
+       contains one or more Blobs
+
+       A Blob is an actual file. It will be located in one or more FilePath's
+
+       I FilePath is an actual location on disk.
+    """
     out = {}
-    for child in treeRoot.find('Files').findall('File'):
-        fpath = child.attrib['Name']
-        fhash = child.attrib['Hash']
-        out[fhash] = FileData(fpath)
     return out
