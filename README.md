@@ -8,5 +8,8 @@ separately, or install using a package manager.
 This script is intended to parse the `Commit.gitdeps.xml` file, located in
 `Engine/Build` subdirectory of the Unreal Engine source distribution.
 
-It will create a URL for each item found, as well as specify where to put the
-fetched item, and what filename to use.
+It will create a URL for each item found, download it, extract the appropriate
+"blob" from each "pack", and then save it to the correct location in the project
+hiercarchy, with the correct filename.
+
+Currently, it outputs to a hardcoded "output" directory.
