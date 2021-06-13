@@ -60,8 +60,8 @@ def generateParsedData(treeRoot: ET.Element):
 
     for blob in treeRoot.find("Blobs").findall("Blob"):
         blobHash = blob.attrib['Hash']
-        blobSize = blob.attrib['Size']
-        blobOffset = blob.attrib['PackOffset']
+        blobSize = int(blob.attrib['Size'])
+        blobOffset = int(blob.attrib['PackOffset'])
         packHash = blob.attrib['PackHash']
         paths = pathDict[blobHash]
         blobDict[packHash].append(

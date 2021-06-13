@@ -3,6 +3,9 @@ import gzip
 import hashlib
 import parser
 import requests
+import os
+import os.path
+import shutil
 
 def parseArguments():
     parser = argparse.ArgumentParser(description='Parse Unreal Engine deps')
@@ -28,8 +31,21 @@ if __name__=="__main__":
 
         data = gzip.decompress(req.content)
         check_hash = hashlib.sha1(data)
-        print("    generated hash: {}".format(check_hash.hexdigest()))
-        print("    hash match: {}".format(pack.hash == check_hash.hexdigest()))
-        fname = pack.hash + ".data"
-        with open(pack.hash, 'wb') as outfile:
-            outfile.write(data)
+        if pack.hash == check_hash.hexdigest():
+            for blob in pack.blobs:
+                blobData = data[blob.offset:blob.offset + blob.size]
+                blobHash = hashlib.sha1(blobData)
+
+                if blob.hash == blobHash.hexdigest():
+                    for path in blob.paths:
+                        dirname = os.path.dirname(path.filePath)
+                        # This will create the directory if it doesn't exist
+                        os.makedirs(dirname, exist_ok=True)
+                        with open(path.filePath, 'wb') as outfile:
+                            outfile.write(blobData)
+                        print("    saved to: " + path.filePath)
+                else:
+                    print("    BLOB HASH DOES NOT MATCH. DOING NOTHING")
+                    print("    (blob hash = {})".format(blobHash))
+        else:
+            print("PACK HASH DOES NOT MATCH. DOING NOTHING.")
