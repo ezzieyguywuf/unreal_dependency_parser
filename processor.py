@@ -4,9 +4,11 @@ import os
 import os.path
 import shutil
 
+TARGET_DIR = "output"
+
 def processPaths(blob, blobData):
     for path in blob.paths:
-        dirname = os.path.dirname(path.filePath)
+        dirname = os.path.join(TARGET_DIR, os.path.dirname(path.filePath))
         # This will create the directory if it doesn't exist
         os.makedirs(dirname, exist_ok=True)
         with open(path.filePath, 'wb') as outfile:
