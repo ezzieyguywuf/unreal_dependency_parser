@@ -3,6 +3,7 @@ import hashlib
 import os
 import os.path
 import shutil
+import stat
 
 TARGET_DIR = "output"
 
@@ -16,7 +17,7 @@ def processPaths(blob, blobData):
             outfile.write(blobData)
         if path.isExecutable:
             # first, get the current mode
-            st = os.stat(targetPathpath.filePath)
+            st = os.stat(targetPath)
             # add executable
             os.chmod(targetPath, st.st_mode | stat.S_IEXEC)
 
