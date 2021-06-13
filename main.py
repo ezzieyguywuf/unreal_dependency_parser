@@ -19,7 +19,7 @@ if __name__=="__main__":
     baseUrl = root.attrib['BaseUrl']
 
     parsedData = parser.generateParsedData(root)
-    for pack in parsedData[:5]:
+    for pack in parsedData:
         url = "{}/{}/{}".format(baseUrl, pack.remotePath, pack.hash)
         print("Downloading: " + url)
         req = requests.get(url)
