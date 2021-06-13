@@ -9,10 +9,17 @@ TARGET_DIR = "output"
 def processPaths(blob, blobData):
     for path in blob.paths:
         dirname = os.path.join(TARGET_DIR, os.path.dirname(path.filePath))
+        targetPath = os.path.join(TARGET_DIR, path.filePath)
         # This will create the directory if it doesn't exist
         os.makedirs(dirname, exist_ok=True)
-        with open(path.filePath, 'wb') as outfile:
+        with open(targetPath, 'wb') as outfile:
             outfile.write(blobData)
+        if path.isExecutable:
+            # first, get the current mode
+            st = os.stat(targetPathpath.filePath)
+            # add executable
+            os.chmod(targetPath, st.st_mode | stat.S_IEXEC)
+
         print("    saved to: " + path.filePath)
 
 def processBlobs(pack, data):
